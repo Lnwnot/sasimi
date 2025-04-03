@@ -80,6 +80,14 @@ if (isset($_SESSION['admin'])): ?>
   </div>
 </nav>
 <?php endif; ?>
+<?php
+if (isset($_SESSION['admin'])): ?>
+
+<?php elseif (isset($_SESSION['customer'])): ?>
+
+<?php else: ?>
+
+<?php endif; ?>
 
 
 <div class="container mt-5">

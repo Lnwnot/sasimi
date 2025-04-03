@@ -80,6 +80,14 @@ if (isset($_SESSION['admin'])): ?>
 <?php else: ?>
 
 <?php endif; ?>
+<?php
+if (isset($_SESSION['admin'])): ?>
+
+<?php elseif (isset($_SESSION['customer'])): ?>
+
+<?php else: ?>
+
+<?php endif; ?>
 
 
 
