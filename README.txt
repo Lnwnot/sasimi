@@ -1,1 +1,1 @@
-Version 1: เริ่มต้นระบบ - index.php, login.php, register.php และ db.php
+Version 2: เพิ่มหน้าเมนูอาหาร (menu.php)
