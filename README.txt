@@ -1,1 +1,1 @@
-Version 4: เพิ่มระบบสั่งอาหาร (order.php, order_confirm.php)
+Version 5: เพิ่มระบบแต้มสะสมและแลกบัตร (reward_vouchers.php)
