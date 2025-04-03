@@ -37,7 +37,7 @@ if (isset($_SESSION['admin'])): ?>
         <li class="nav-item"><a class="nav-link" href="admin/manage_tables.php">จัดการโต๊ะ</a></li>
         <li class="nav-item"><a class="nav-link" href="admin/manage_menu.php">จัดการเมนู</a></li>
         <li class="nav-item"><a class="nav-link" href="admin/manage_rewards.php">จัดการรางวัล</a></li>
-        <li class="nav-item"><a class="nav-link" href="logout.php">ออกจากระบบ</a></li>
+        <li class="nav-item"><a class="nav-link" href=logout.php>ออกจากระบบ</a></li>
       </ul>
     </div>
   </div>
@@ -48,12 +48,12 @@ if (isset($_SESSION['admin'])): ?>
     <a class="navbar-brand" href="index.php">Sashimi</a>
     <div class="collapse navbar-collapse">
       <ul class="navbar-nav ms-auto">
-        <li class="nav-item"><a class="nav-link" href="booking.php">จองโต๊ะ</a></li>
-        <li class="nav-item"><a class="nav-link" href="menu.php">เมนูอาหาร</a></li>
-        <li class="nav-item"><a class="nav-link" href="order.php">สั่งอาหาร</a></li>
-        <li class="nav-item"><a class="nav-link" href="reward_vouchers.php">แลกแต้ม</a></li>
-        <li class="nav-item"><a class="nav-link" href="reservation_status.php">สถานะการจอง</a></li>
-        <li class="nav-item"><a class="nav-link" href="logout.php">ออกจากระบบ</a></li>
+        <li class="nav-item"><a class="nav-link" href=booking.php>จองโต๊ะ</a></li>
+        <li class="nav-item"><a class="nav-link" href=menu.php>เมนูอาหาร</a></li>
+        <li class="nav-item"><a class="nav-link" href=order.php>สั่งอาหาร</a></li>
+        <li class="nav-item"><a class="nav-link" href=reward_vouchers.php>แลกแต้ม</a></li>
+        <li class="nav-item"><a class="nav-link" href=reservation_status.php>สถานะการจอง</a></li>
+        <li class="nav-item"><a class="nav-link" href=logout.php>ออกจากระบบ</a></li>
       </ul>
     </div>
   </div>
@@ -64,9 +64,9 @@ if (isset($_SESSION['admin'])): ?>
     <a class="navbar-brand" href="index.php">Sashimi</a>
     <div class="collapse navbar-collapse">
       <ul class="navbar-nav ms-auto">
-        <li class="nav-item"><a class="nav-link" href="menu.php">เมนูอาหาร</a></li>
-        <li class="nav-item"><a class="nav-link" href="login.php">เข้าสู่ระบบ</a></li>
-        <li class="nav-item"><a class="nav-link" href="register.php">สมัครสมาชิก</a></li>
+        <li class="nav-item"><a class="nav-link" href=menu.php>เมนูอาหาร</a></li>
+        <li class="nav-item"><a class="nav-link" href=login.php>เข้าสู่ระบบ</a></li>
+        <li class="nav-item"><a class="nav-link" href=register.php>สมัครสมาชิก</a></li>
       </ul>
     </div>
   </div>
@@ -108,8 +108,8 @@ if (isset($_SESSION['admin'])): ?>
     <p>ระดับสมาชิกของคุณ: <strong><?= ucfirst($membership) ?></strong></p>
   <?php else: ?>
     <p class="lead">กรุณาเข้าสู่ระบบหรือสมัครสมาชิกเพื่อใช้งาน</p>
-    <a href="login.php" class="btn btn-dark btn-lg m-2">เข้าสู่ระบบ</a>
-    <a href="register.php" class="btn btn-outline-secondary btn-lg m-2">สมัครสมาชิก</a>
+    <a href=login.php class="btn btn-dark btn-lg m-2">เข้าสู่ระบบ</a>
+    <a href=register.php class="btn btn-outline-secondary btn-lg m-2">สมัครสมาชิก</a>
   <?php endif; ?>
 </div>
 

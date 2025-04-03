@@ -6,6 +6,7 @@ if (!isset($_SESSION['customer'])) {
 }
 include 'includes/db.php';
 
+$username = $_SESSION['customer'];
 $total = 0;
 $items = [];
 
@@ -25,6 +26,10 @@ if (isset($_POST['quantity'])) {
             ];
         }
     }
+
+    // บันทึกแต้มสะสม
+    $points_earned = floor($total / 10); // 1 แต้มต่อ 10 บาท
+    mysqli_query($conn, "UPDATE users SET points = points + $points_earned WHERE username = '$username'");
 }
 ?>
 <!DOCTYPE html>
@@ -35,6 +40,7 @@ if (isset($_POST['quantity'])) {
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body class="bg-light">
+<?php if (isset($_SESSION['customer'])): ?>
 <?php
 if (isset($_SESSION['admin'])): ?>
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -45,7 +51,7 @@ if (isset($_SESSION['admin'])): ?>
         <li class="nav-item"><a class="nav-link" href="admin/manage_tables.php">จัดการโต๊ะ</a></li>
         <li class="nav-item"><a class="nav-link" href="admin/manage_menu.php">จัดการเมนู</a></li>
         <li class="nav-item"><a class="nav-link" href="admin/manage_rewards.php">จัดการรางวัล</a></li>
-        <li class="nav-item"><a class="nav-link" href="logout.php">ออกจากระบบ</a></li>
+        <li class="nav-item"><a class="nav-link" href=logout.php>ออกจากระบบ</a></li>
       </ul>
     </div>
   </div>
@@ -56,12 +62,12 @@ if (isset($_SESSION['admin'])): ?>
     <a class="navbar-brand" href="index.php">Sashimi</a>
     <div class="collapse navbar-collapse">
       <ul class="navbar-nav ms-auto">
-        <li class="nav-item"><a class="nav-link" href="booking.php">จองโต๊ะ</a></li>
-        <li class="nav-item"><a class="nav-link" href="menu.php">เมนูอาหาร</a></li>
-        <li class="nav-item"><a class="nav-link" href="order.php">สั่งอาหาร</a></li>
-        <li class="nav-item"><a class="nav-link" href="reward_vouchers.php">แลกแต้ม</a></li>
-        <li class="nav-item"><a class="nav-link" href="reservation_status.php">สถานะการจอง</a></li>
-        <li class="nav-item"><a class="nav-link" href="logout.php">ออกจากระบบ</a></li>
+        <li class="nav-item"><a class="nav-link" href=booking.php>จองโต๊ะ</a></li>
+        <li class="nav-item"><a class="nav-link" href=menu.php>เมนูอาหาร</a></li>
+        <li class="nav-item"><a class="nav-link" href=order.php>สั่งอาหาร</a></li>
+        <li class="nav-item"><a class="nav-link" href=reward_vouchers.php>แลกแต้ม</a></li>
+        <li class="nav-item"><a class="nav-link" href=reservation_status.php>สถานะการจอง</a></li>
+        <li class="nav-item"><a class="nav-link" href=logout.php>ออกจากระบบ</a></li>
       </ul>
     </div>
   </div>
@@ -72,24 +78,15 @@ if (isset($_SESSION['admin'])): ?>
     <a class="navbar-brand" href="index.php">Sashimi</a>
     <div class="collapse navbar-collapse">
       <ul class="navbar-nav ms-auto">
-        <li class="nav-item"><a class="nav-link" href="menu.php">เมนูอาหาร</a></li>
-        <li class="nav-item"><a class="nav-link" href="login.php">เข้าสู่ระบบ</a></li>
-        <li class="nav-item"><a class="nav-link" href="register.php">สมัครสมาชิก</a></li>
+        <li class="nav-item"><a class="nav-link" href=menu.php>เมนูอาหาร</a></li>
+        <li class="nav-item"><a class="nav-link" href=login.php>เข้าสู่ระบบ</a></li>
+        <li class="nav-item"><a class="nav-link" href=register.php>สมัครสมาชิก</a></li>
       </ul>
     </div>
   </div>
 </nav>
 <?php endif; ?>
-<?php
-if (isset($_SESSION['admin'])): ?>
-
-<?php elseif (isset($_SESSION['customer'])): ?>
-
-<?php else: ?>
-
 <?php endif; ?>
-
-
 <div class="container mt-5">
     <h2 class="mb-4 text-center">✅ ยืนยันคำสั่งซื้อ</h2>
     <?php if ($total > 0): ?>
@@ -109,8 +106,9 @@ if (isset($_SESSION['admin'])): ?>
         </tbody>
     </table>
     <h4 class="text-end">รวมทั้งหมด: <?= number_format($total, 2) ?> บาท</h4>
+    <h5 class="text-end text-success">คุณได้รับ <?= $points_earned ?> แต้มสะสม 🎉</h5>
     <?php else: ?>
-        <p class="text-center">❌ คุณยังไม่ได้เลือกเมนูใดเลย</p>
+        <p class="text-center text-danger">❌ คุณยังไม่ได้เลือกเมนูใดเลย</p>
     <?php endif; ?>
 </div>
 </body>
