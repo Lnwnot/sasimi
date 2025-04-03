@@ -1,0 +1,1 @@
+Version 1: เริ่มต้นระบบ - index.php, login.php, register.php และ db.php
