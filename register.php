@@ -17,7 +17,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $msg = "<div class='alert alert-warning'>⚠️ ชื่อผู้ใช้นี้ถูกใช้งานแล้ว</div>";
         } else {
             mysqli_query($conn, "INSERT INTO users (username, password, role) VALUES ('$username', '$password', 'customer')");
-            $msg = "<div class='alert alert-success'>✅ สมัครสมาชิกเรียบร้อย! <a href='admin/login.php'>เข้าสู่ระบบ</a></div>";
+            $msg = "<div class='alert alert-success'>✅ สมัครสมาชิกเรียบร้อย! <a href='login.php'>เข้าสู่ระบบ</a></div>";
         }
     }
 }
