@@ -5,7 +5,12 @@ if (!isset($_SESSION['customer'])) {
     exit();
 }
 include 'includes/db.php';
-
+$username = $_SESSION['customer'];
+$has_reservation = mysqli_query($conn, "SELECT * FROM reservations WHERE customer_name = '$username'");
+if (mysqli_num_rows($has_reservation) === 0) {
+    echo "<script>alert('กรุณาจองโต๊ะก่อนสั่งอาหาร'); window.location.href='booking.php';</script>";
+    exit();
+}
 $menus = mysqli_query($conn, "SELECT * FROM menu");
 ?>
 <!DOCTYPE html>
