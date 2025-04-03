@@ -12,8 +12,12 @@ if (isset($_GET['id'])) {
     if ($row = mysqli_fetch_assoc($check)) {
         mysqli_query($conn, "UPDATE tables SET status = 'available' WHERE id = '{$row['table_id']}'");
         mysqli_query($conn, "DELETE FROM reservations WHERE id = '$res_id'");
-        header("Location: index.php");
+        header("Location: reservation_status.php");
         exit();
+    } else {
+        echo "❌ ไม่พบข้อมูลการจอง";
     }
+} else {
+    echo "❌ กรุณาระบุรหัสการจอง";
 }
 ?>
