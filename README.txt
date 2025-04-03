@@ -1,1 +1,1 @@
-Version 2: เพิ่มหน้าเมนูอาหาร (menu.php)
+Version 3: เพิ่มระบบจองโต๊ะ (booking.php)
