@@ -2,30 +2,32 @@
 session_start();
 include 'includes/db.php';
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $username = trim($_POST['username']);
-    $password = md5($_POST['password']);
+$error = '';
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
+    $username = $_POST['username'];
+    $password = $_POST['password'];
 
-    $sql = "SELECT * FROM users WHERE username = '$username' AND password = '$password'";
-    $query = mysqli_query($conn, $sql);
+    $result = mysqli_query($conn, "SELECT * FROM users WHERE username = '$username' AND password = '$password'");
+    $user = mysqli_fetch_assoc($result);
 
-    if ($query && mysqli_num_rows($query) === 1) {
-        $user = mysqli_fetch_assoc($query);
-        $role = $user['role'];
-
-        if ($role === 'admin') {
+    if ($user) {
+        if ($user['role'] === 'admin') {
             $_SESSION['admin'] = $username;
-            header("Location: index.php");
-        } elseif ($role === 'customer') {
+            header("Location: admin/manage_menu.php");
+        } elseif ($user['role'] === 'staff') {
+            $_SESSION['staff'] = $username;
+            header("Location: staff/orders.php");
+        } elseif ($user['role'] === 'customer') {
             $_SESSION['customer'] = $username;
             header("Location: index.php");
         }
         exit();
     } else {
-        $error = "❌ ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง";
+        $error = "ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง";
     }
 }
 ?>
+
 <!DOCTYPE html>
 <html lang="th">
 <head>
@@ -34,57 +36,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body class="bg-light">
-<?php
-if (isset($_SESSION['admin'])): ?>
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-  <div class="container-fluid">
-    <a class="navbar-brand" href="../index.php">Sashimi Admin</a>
-    <div class="collapse navbar-collapse">
-      <ul class="navbar-nav ms-auto">
-        <li class="nav-item"><a class="nav-link" href="admin/manage_tables.php">จัดการโต๊ะ</a></li>
-        <li class="nav-item"><a class="nav-link" href="admin/manage_menu.php">จัดการเมนู</a></li>
-        <li class="nav-item"><a class="nav-link" href="admin/manage_rewards.php">จัดการรางวัล</a></li>
-        <li class="nav-item"><a class="nav-link" href=logout.php>ออกจากระบบ</a></li>
-      </ul>
-    </div>
-  </div>
-</nav>
-<?php elseif (isset($_SESSION['customer'])): ?>
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-  <div class="container-fluid">
-    <a class="navbar-brand" href="index.php">Sashimi</a>
-    <div class="collapse navbar-collapse">
-      <ul class="navbar-nav ms-auto">
-        <li class="nav-item"><a class="nav-link" href=booking.php>จองโต๊ะ</a></li>
-        <li class="nav-item"><a class="nav-link" href=menu.php>เมนูอาหาร</a></li>
-        <li class="nav-item"><a class="nav-link" href=order.php>สั่งอาหาร</a></li>
-        <li class="nav-item"><a class="nav-link" href=reward_vouchers.php>แลกแต้ม</a></li>
-        <li class="nav-item"><a class="nav-link" href=reservation_status.php>สถานะการจอง</a></li>
-        <li class="nav-item"><a class="nav-link" href=logout.php>ออกจากระบบ</a></li>
-      </ul>
-    </div>
-  </div>
-</nav>
-<?php else: ?>
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-  <div class="container-fluid">
-    <a class="navbar-brand" href="index.php">Sashimi</a>
-    <div class="collapse navbar-collapse">
-      <ul class="navbar-nav ms-auto">
-        <li class="nav-item"><a class="nav-link" href=menu.php>เมนูอาหาร</a></li>
-        <li class="nav-item"><a class="nav-link" href=login.php>เข้าสู่ระบบ</a></li>
-        <li class="nav-item"><a class="nav-link" href=register.php>สมัครสมาชิก</a></li>
-      </ul>
-    </div>
-  </div>
-</nav>
-<?php endif; ?>
-
-<div class="container mt-5" style="max-width: 500px;">
-  <div class="card shadow">
-    <div class="card-body">
-      <h3 class="card-title text-center mb-4">เข้าสู่ระบบ</h3>
-      <?php if (!empty($error)) echo "<div class='alert alert-danger'>$error</div>"; ?>
+<div class="container mt-5">
+  <div class="col-md-6 offset-md-3">
+    <div class="card p-4 shadow">
+      <h3 class="text-center mb-3">🔐 เข้าสู่ระบบ</h3>
+      <?php if ($error): ?>
+        <div class="alert alert-danger"><?= $error ?></div>
+      <?php endif; ?>
       <form method="post">
         <div class="mb-3">
           <label>ชื่อผู้ใช้</label>
@@ -94,11 +52,8 @@ if (isset($_SESSION['admin'])): ?>
           <label>รหัสผ่าน</label>
           <input type="password" name="password" class="form-control" required>
         </div>
-        <button class="btn btn-primary w-100">เข้าสู่ระบบ</button>
+        <button class="btn btn-primary w-100" type="submit">เข้าสู่ระบบ</button>
       </form>
-      <div class="text-center mt-3">
-        <small>ยังไม่มีบัญชี? <a href=register.php>สมัครสมาชิก</a></small>
-      </div>
     </div>
   </div>
 </div>
