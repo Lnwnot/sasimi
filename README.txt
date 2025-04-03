@@ -1,1 +1,1 @@
-Version 5: เพิ่มระบบแต้มสะสมและแลกบัตร (reward_vouchers.php)
+Version 6: เพิ่มส่วน Admin สำหรับจัดการระบบ
