@@ -5,15 +5,15 @@ if (!isset($_SESSION['customer'])) {
     exit();
 }
 include 'includes/db.php';
-
-$menus = mysqli_query($conn, "SELECT * FROM menu");
+$user = $_SESSION['customer'];
+$res = mysqli_query($conn, "SELECT * FROM reservations WHERE customer_name = '$user'");
 ?>
 <!DOCTYPE html>
 <html lang="th">
 <head>
-    <meta charset="UTF-8">
-    <title>สั่งอาหาร</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <meta charset="UTF-8">
+  <title>สถานะการจอง</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body class="bg-light">
 <?php
@@ -61,28 +61,22 @@ if (isset($_SESSION['admin'])): ?>
   </div>
 </nav>
 <?php endif; ?>
-
-
 <div class="container mt-5">
-    <h2 class="mb-4 text-center">🍱 สั่งอาหาร</h2>
-    <form method="post" action="order_confirm.php">
-        <div class="row">
-            <?php while ($menu = mysqli_fetch_assoc($menus)) : ?>
-            <div class="col-md-4 mb-3">
-                <div class="card h-100">
-                    <div class="card-body text-center">
-                        <h5 class="card-title"><?= $menu['name'] ?></h5>
-                        <p class="card-text">ราคา <?= number_format($menu['price'], 2) ?> บาท</p>
-                        <input type="number" class="form-control" name="quantity[<?= $menu['id'] ?>]" min="0" placeholder="จำนวน">
-                    </div>
-                </div>
-            </div>
-            <?php endwhile; ?>
-        </div>
-        <div class="text-center mt-3">
-            <button type="submit" class="btn btn-success">ยืนยันการสั่งซื้อ</button>
-        </div>
-    </form>
+  <h2 class="mb-4 text-center">📅 สถานะการจอง</h2>
+  <table class="table table-bordered">
+    <thead><tr><th>วันที่</th><th>เวลา</th><th>จำนวนคน</th><th>โต๊ะ</th><th>ยกเลิก</th></tr></thead>
+    <tbody>
+      <?php while($r = mysqli_fetch_assoc($res)): ?>
+      <tr>
+        <td><?= $r['date'] ?></td>
+        <td><?= $r['time'] ?></td>
+        <td><?= $r['people'] ?></td>
+        <td><?= $r['table_id'] ?></td>
+        <td><a href="cancel_reservation.php?id=<?= $r['id'] ?>" class="btn btn-sm btn-danger" onclick="return confirm('ยืนยันการยกเลิก?')">ยกเลิก</a></td>
+      </tr>
+      <?php endwhile; ?>
+    </tbody>
+  </table>
 </div>
 </body>
 </html>
